@@ -56,20 +56,24 @@ function startWorkout() {
 }
 
 function nextExercise() {
-  dingSound.play();
+  //dingSound.play();
   if (isResting || currentExerciseIndex === -1) {
       currentExerciseIndex++;
-      if (currentExerciseIndex >= exercises.length) {
-          exerciseDisplay.textContent = "Workout Complete!";
-          nextExerciseDisplay.textContent = "";
-          clearInterval(timerInterval);
-          return;
-      }
       isResting = false;
       currentExerciseTime = exercises[currentExerciseIndex].duration;
       exerciseDisplay.textContent = exercises[currentExerciseIndex].name;
       nextExerciseDisplay.textContent = "";
   } else {
+      if (currentExerciseIndex + 1 >= exercises.length) {
+        exerciseDisplay.textContent = "Workout Complete!";
+        nextExerciseDisplay.textContent = "";
+        clearInterval(timerInterval);
+        const playPauseButton = document.getElementById("play-pause");
+        playPauseButton.style.display = "none";
+  
+        return;
+      }
+
       isResting = true;
       currentExerciseTime = restTime;
       exerciseDisplay.textContent = "Rest";
@@ -97,4 +101,3 @@ function updateTimer() {
   }
 }
 
-// startWorkout();
