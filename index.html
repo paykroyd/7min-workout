@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-Minute Workout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="timer-container">
+            <svg class="progress-ring" width="200" height="200">
+                <circle class="progress-ring__circle" stroke="white" stroke-width="8" fill="transparent" r="90" cx="100" cy="100" />
+            </svg>
+            <div id="timer">30</div>
+        </div>        
+        <div id="exercise">Get Ready!</div>
+        <div id="next-exercise"></div>
+        <button id="play-pause" onclick="onPlayPauseClick()">Start</button>
+    </div>
+    <audio id="ding" src="ding.mp3"></audio> 
+
+    <script src="script.js"></script>
+</body>
+</html>
