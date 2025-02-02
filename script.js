@@ -12,7 +12,7 @@ const exercises = [
   { name: "Push-ups and Rotation", duration: 30 },
   { name: "Side Plank", duration: 30 }
 ];
-const restTime = 10;
+const restTime = 15;
 
 let currentExerciseIndex = -1;
 let currentExerciseTime = 0;
@@ -52,7 +52,19 @@ function setProgress(percent) {
 
 function startWorkout() {
   currentExerciseIndex = -1;
+  window.wakeLock = preventSleep();
   nextExercise();
+}
+
+function endWorkout() {
+  exerciseDisplay.textContent = "Workout Complete!";
+  nextExerciseDisplay.textContent = "";
+  clearInterval(timerInterval);
+  const playPauseButton = document.getElementById("play-pause");
+  playPauseButton.style.display = "none";
+  if (window.wakeLock !== null) {
+    wakeLock.release();
+  }
 }
 
 function nextExercise() {
@@ -65,12 +77,7 @@ function nextExercise() {
       nextExerciseDisplay.textContent = "";
   } else {
       if (currentExerciseIndex + 1 >= exercises.length) {
-        exerciseDisplay.textContent = "Workout Complete!";
-        nextExerciseDisplay.textContent = "";
-        clearInterval(timerInterval);
-        const playPauseButton = document.getElementById("play-pause");
-        playPauseButton.style.display = "none";
-  
+        endWorkout();
         return;
       }
 
@@ -101,3 +108,17 @@ function updateTimer() {
   }
 }
 
+async function preventSleep() {
+  if ('wakeLock' in navigator) {
+    try {
+      const wakeLock = await navigator.wakeLock.request('screen');
+      return wakeLock;
+    } catch (err) {
+      console.log('Wake Lock error:', err.name, err.message);
+    }
+  } else {
+    console.log('Wake Lock API not supported');
+  }
+  return null;
+ }
+ 
